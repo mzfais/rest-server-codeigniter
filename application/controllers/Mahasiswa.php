@@ -26,13 +26,14 @@ class Mahasiswa extends RestController
   {
     parent::__construct();
     $this->load->model('mahasiswa_model', 'mhs');
+    $this->methods['index_get']['limit'] = 2;
   }
 
   public function index_get()
   {
-    $id = $this->get('id');
+    $id = $this->get('id', true);
     if ($id === null) {
-      $p = $this->get('page');
+      $p = $this->get('page', true);
       $p = (empty($p) ? 1 : $p);
       $total_data = $this->mhs->count();
       $total_page = ceil($total_data / 5);
@@ -66,10 +67,10 @@ class Mahasiswa extends RestController
   public function index_post()
   {
     $data = [
-      'nim' => $this->post('nim'),
-      'nama_mhs' => $this->post('nama'),
-      'alamat_mhs' => $this->post('alamat'),
-      'prodi' => $this->post('prodi')
+      'nim' => $this->post('nim', true),
+      'nama_mhs' => $this->post('nama', true),
+      'alamat_mhs' => $this->post('alamat', true),
+      'prodi' => $this->post('prodi', true)
     ];
     $simpan = $this->mhs->add($data);
     if ($simpan['status']) {
@@ -82,12 +83,12 @@ class Mahasiswa extends RestController
   public function index_put()
   {
     $data = [
-      'nim' => $this->put('nim'),
-      'nama_mhs' => $this->put('nama'),
-      'alamat_mhs' => $this->put('alamat'),
-      'prodi' => $this->put('prodi')
+      'nim' => $this->put('nim', true),
+      'nama_mhs' => $this->put('nama', true),
+      'alamat_mhs' => $this->put('alamat', true),
+      'prodi' => $this->put('prodi', true)
     ];
-    $id = $this->put('id');
+    $id = $this->put('id', true);
     if ($id === null) {
       $this->response(['status' => false, 'msg' => 'Masukkan NIM yang akan dirubah'], RestController::HTTP_BAD_REQUEST);
     }
@@ -105,7 +106,7 @@ class Mahasiswa extends RestController
 
   public function index_delete()
   {
-    $id = $this->delete('id');
+    $id = $this->delete('id', true);
     if ($id === null) {
       $this->response(['status' => false, 'msg' => 'Masukkan NIM yang akan dihapus'], RestController::HTTP_BAD_REQUEST);
     }
